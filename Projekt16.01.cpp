@@ -10,12 +10,21 @@ int wherey();
 void HideCursor();
 
 const int Esq = 27;
+const int MAX_SZEROKOSC = 104;
+const int MAX_WYSOKOSC = 24;
 
 int main()
 {
-	int x, y, x1, y1, bok;
+	int x, y, x1, y1, bok, szerokosc, wysokosc;
 	char klawisz;
-	x = 0; y = 0; bok = 4;
+	cout << "Prosze wybrac znak : "<<endl;    	// Wybieranie znaku ASCII
+	char znak;
+	znak = getch();
+	x = 0; y = 0;
+	cout << "Podaj szerokosc : ";
+	cin >> szerokosc;						// Podawanie wymiary figury
+	cout << "Podaj wysokosc : ";
+	cin >> wysokosc;
 	do
 	{
 		system("cls");
@@ -23,56 +32,80 @@ int main()
 		x1 = x; y1 = y;
 		gotoxy(x1, y1);
 
-		for (int i = -10; i <= bok; i++)		 // gorna krawedz
-			cout << '*';
-
-		for (int i = 1; i <= bok + 1; i++)    
+		for (int i = 0; i <= szerokosc; i++)		 // gorna krawedz
+			cout << znak;
+		int polowa = wysokosc / 2 ;
+		for (int i = 1; i < wysokosc - 1; i++)    
 		{
-			y1++;
-			gotoxy(x1, y1);
-			cout << '*';
-			x1 = x + bok - 1;					// boki - do poprawy
-			gotoxy(x1, y1);
-			cout << '*';
-			x1 = x;
+			if ( i < polowa )
+			{
+				x1 = x + i;
+				y1 = y + i;
+			}
+			else {										// œrodek
+			
+				x1 = x +  wysokosc - i - 1;
+				y1 = y + i;
+			}
+			
+		gotoxy (x1,y1);
+		cout << znak;
+		
 		}
+		x1 = x;
 		y1++;
 		gotoxy(x1, y1);
-		for (int i = -10; i <= bok; i++)		// dolna krawedz
-			cout << '*';
+		for (int i = 0; i <= szerokosc; i++)		// dolna krawedz
+			cout << znak;
 
 		HideCursor();
 		klawisz = getch();
 
 		switch (klawisz)
 		{
-		case 43: { bok = bok + 2;		// powiekszenie figury
+		case 43: { 
+			szerokosc = szerokosc + 2;
+			wysokosc = wysokosc +2;		// powiekszenie figury
 			x++; y++;
 			break;
 		}
-		case 45: { bok = bok - 2;		// pomniejszenie figury
-			x--; y--;
+		case 45: 
+		{ 
+			szerokosc = szerokosc - 2;
+			wysokosc = wysokosc -2;		// pomniejszenie figury
+			if ( x > 0){
+			
+			x--; 
+		}
+		if ( y > 0)
+		{
+			y--;
+		}
 			break;
 		}
 
-		case 75: { x--;
+		case 75: { 
+			x--;
 				if (x <= 0)				// przesuniecie w lewo
 				x = 0;
 			break;
 		}  
-		case 77: { x++;
-				if (x >= 104)			// przesuniecie w prawo
-				x = 104;
+		case 77: { 
+			x++;
+				if (x >= MAX_SZEROKOSC)			// przesuniecie w prawo
+				x = MAX_SZEROKOSC;
 			break; 
 		}
-		case 72: { y--;
+		case 72: { 
+			y--;
 				if (y <= 0)				// przesuniecie do gory
 				y = 0;
 			break; 
 		}
-		case 80: { y++;
-				if (y >= 24)			// przesuniecie do dolu
-				y = 24;
+		case 80: { 
+			y++;
+				if (y >= MAX_WYSOKOSC)			// przesuniecie do dolu
+				y = MAX_WYSOKOSC;
 			break; 
 		}  
 		case Esq: { 
